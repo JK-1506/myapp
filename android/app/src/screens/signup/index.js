@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react'
+import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import SysModal from '../../components/sys_modal';
+import {http} from '../../services/http-request';
+import {END_POINT} from '../../services/service-endpoints';
 
 const SignupScreen = () => {
-
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
@@ -35,41 +36,25 @@ const SignupScreen = () => {
   };
 
   const onClickSignup = () => {
-    if (username.length == 0 || password.length == 0 || name == 0 || address == 0) {
+    if (
+      username.length == 0 ||
+      password.length == 0 ||
+      name == 0 ||
+      address == 0
+    ) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin đăng ký.');
       setShowModal(true);
       return;
     }
-    // console.log(username);
-    // console.log(password);
-    // console.log(name);
-    // console.log(address);
-    // call api
-    fetch(URL.localhost + "/auth/register", {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        'username': username,
-        'password': password,
-        'name': name,
-        'address': address
-      })
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        const currentUser = res;
-        console.log(currentUser._id);
-        // Chuyen man hinh den đăng nhập
+    http
+      .post(END_POINT.auth.register, {username, password, name, address})
+      .then(response => {
         navigation.navigate('Login');
       })
-      .catch((error) => {
+      .catch(error => {
         setErrorMessage(error);
         setShowModal(true);
-      })
-
+      });
   };
 
   return (
@@ -78,7 +63,11 @@ const SignupScreen = () => {
         backgroundColor: '#85C1E9',
         flex: 1,
       }}>
-      <SysModal visible={showModal} message={errorMessage} onHide={onHideModal} />
+      <SysModal
+        visible={showModal}
+        message={errorMessage}
+        onHide={onHideModal}
+      />
       <View
         style={{
           backgroundColor: 'white',
@@ -86,7 +75,6 @@ const SignupScreen = () => {
           flex: 1,
           borderRadius: 10,
         }}>
-
         <View
           style={{
             flex: 1,
@@ -104,32 +92,21 @@ const SignupScreen = () => {
                 fontWeight: 'bold',
                 color: '#85C1E9',
                 margin: 10,
-              }}>Đăng ký
+              }}>
+              Đăng ký
             </Text>
           </View>
           {/* body */}
           <View>
-
             <View
               style={{
                 padding: 10,
               }}>
               <View>
-                <TextInput placeholder='Số điện thoại' value={username} onChangeText={onChangeUsername}
-                  style={{
-                    fontSize: 20,
-                    backgroundColor: "#CDD1D3",
-                    borderRadius: 20,
-                  }}></TextInput>
-              </View>
-            </View>
-
-            <View
-              style={{
-                padding: 10,
-              }}>
-              <View>
-                <TextInput secureTextEntry={true} value={password} onChangeText={onChangePassword} placeholder='Mật khẩu'
+                <TextInput
+                  placeholder="Số điện thoại"
+                  value={username}
+                  onChangeText={onChangeUsername}
                   style={{
                     fontSize: 20,
                     backgroundColor: '#CDD1D3',
@@ -142,12 +119,15 @@ const SignupScreen = () => {
               style={{
                 padding: 10,
               }}>
-
               <View>
-                <TextInput placeholder='Họ và tên' value={name} onChangeText={onChangeName}
+                <TextInput
+                  secureTextEntry={true}
+                  value={password}
+                  onChangeText={onChangePassword}
+                  placeholder="Mật khẩu"
                   style={{
                     fontSize: 20,
-                    backgroundColor: "#CDD1D3",
+                    backgroundColor: '#CDD1D3',
                     borderRadius: 20,
                   }}></TextInput>
               </View>
@@ -158,10 +138,30 @@ const SignupScreen = () => {
                 padding: 10,
               }}>
               <View>
-                <TextInput placeholder='Địa chỉ' value={address} onChangeText={onChangeAddress}
+                <TextInput
+                  placeholder="Họ và tên"
+                  value={name}
+                  onChangeText={onChangeName}
                   style={{
                     fontSize: 20,
-                    backgroundColor: "#CDD1D3",
+                    backgroundColor: '#CDD1D3',
+                    borderRadius: 20,
+                  }}></TextInput>
+              </View>
+            </View>
+
+            <View
+              style={{
+                padding: 10,
+              }}>
+              <View>
+                <TextInput
+                  placeholder="Địa chỉ"
+                  value={address}
+                  onChangeText={onChangeAddress}
+                  style={{
+                    fontSize: 20,
+                    backgroundColor: '#CDD1D3',
                     borderRadius: 20,
                   }}></TextInput>
               </View>
@@ -172,29 +172,32 @@ const SignupScreen = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <TouchableOpacity activeOpacity={0.5} onPress={onClickSignup}
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={onClickSignup}
                 style={{
                   width: 200,
                   padding: 10,
                   borderRadius: 20,
-                  backgroundColor: "#85C1E9",
+                  backgroundColor: '#85C1E9',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
                 <Text
                   style={{
                     color: 'white',
-                    fontWeight: "600",
+                    fontWeight: '600',
                     fontSize: 20,
-
-                  }}>ĐĂNG KÝ</Text>
+                  }}>
+                  ĐĂNG KÝ
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default SignupScreen;
