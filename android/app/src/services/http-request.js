@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {getToken} from '../storage';
+import {getUserInfo} from '../storage';
 
 const createAxiosInstance = async () => {
-  const token = await getToken();
+  const {accessToken} = await getUserInfo();
   const axiosInstance = axios.create({
     baseURL: 'http://192.168.2.43:27017/',
     timeout: 10000,
@@ -14,8 +14,8 @@ const createAxiosInstance = async () => {
   axiosInstance.interceptors.request.use(
     config => {
       // Add authorization header
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
       return config;
     },

@@ -5,8 +5,8 @@ import SysModal from '../../components/sys_modal';
 import {URL} from '../../../../../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {http} from '../../services/http-request';
-import {setToken} from '../../storage';
 import {END_POINT} from '../../services/service-endpoints';
+import {setUserInfo} from '../../storage';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const LoginScreen = () => {
     http
       .post(END_POINT.auth.login, {username, password})
       .then(response => {
-        setToken(response.accessToken);
+        setUserInfo(JSON.stringify(response));
         navigation.navigate('Home');
       })
       .catch(error => {
