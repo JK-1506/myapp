@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {http} from '../../services/http-request';
 import {END_POINT} from '../../services/service-endpoints';
 import {getUserInfo} from '../../storage';
@@ -10,15 +10,17 @@ const UserScreen = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {_id} = await getUserInfo();
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUser = async () => {
+        const {_id} = await getUserInfo();
 
-      const res = await http.get(END_POINT.user.user(_id));
-      setUser(res);
-    };
-    fetchUser();
-  }, []);
+        const res = await http.get(END_POINT.user.user(_id));
+        setUser(res);
+      };
+      fetchUser();
+    }, []),
+  );
 
   const onLogout = () => {
     http

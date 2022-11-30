@@ -7,6 +7,8 @@ import EditpassScreen from '../editpass';
 import EdituserScreen from '../edituser';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import DeviceDetailScreen from '../deviceDetail/device-detail-screen';
+import AddDeviceScreen from '../adddevice';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,16 @@ const MainScreen = () => {
         <Stack.Screen name="User" component={UserScreen} />
         <Stack.Screen name="Editpass" component={EditpassScreen} />
         <Stack.Screen name="Edituser" component={EdituserScreen} />
+        <Stack.Screen
+          name="DeviceDetail"
+          component={DeviceDetailScreen}
+          options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="AddDevice"
+          component={AddDeviceScreen}
+          options={{headerShown: true}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

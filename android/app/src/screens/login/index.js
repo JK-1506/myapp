@@ -11,8 +11,8 @@ import {setUserInfo} from '../../storage';
 const LoginScreen = () => {
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('0382627616');
+  const [password, setPassword] = useState('123');
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 

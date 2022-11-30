@@ -12,3 +12,12 @@ export const getUserInfo = async () => {
 export const clear = async () => {
   return await AsyncStorage.clear();
 };
+
+export const setActiveDevice = async device => {
+  await AsyncStorage.setItem('@active_device', JSON.stringify(device));
+};
+
+export const getActiveDevice = async () => {
+  const device = await AsyncStorage.getItem('@active_device');
+  return JSON.parse(device || '{}');
+};
